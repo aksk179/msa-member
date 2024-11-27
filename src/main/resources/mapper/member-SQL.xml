@@ -6,11 +6,22 @@
 <mapper namespace="com.ksj.member.mapper.MemberMapper">
 
     <!-- 조회 -->
-    <select id="selectMemberList" resultType="MemberVO">
+    <select id="selectMemberList" parameterType="MemberVO" resultType="MemberVO">
         select id, name, cell_phone, email, zip_code, address, status
         from member
         order by name asc
     </select>
 
+    <!-- 등록 -->
+    <insert id="registerMember" parameterType="MemberVO">
+        INSERT INTO member (id, name, passwd, cell_phone, email, zip_code, address, status) VALUES
+        (#{id}, #{name}, #{passwd}, #{cellPhone}, #{email}, #{zipCode}, #{address}, #{status})
+    </insert>
 
+    <!-- 아이디 중복체크 -->
+    <select id="isDuplicate" parameterType="MemberVO" resultType="int">
+        select count(*) as cnt
+        from member
+        where id = #{id}
+    </select>
 </mapper>

@@ -17,4 +17,21 @@ public class MemberServiceImpl implements MemberService{
     public List<MemberVO> selectMemberList(MemberVO memberVO) {
         return memberMapper.selectMemberList(memberVO);
     }
+
+    @Override
+    public void registerMember(MemberVO memberVO) {
+        memberVO.setStatus("N");
+        memberMapper.registerMember(memberVO);
+    }
+
+    @Override
+    public String isDuplicate(MemberVO memberVO) {
+        int cnt = memberMapper.isDuplicate(memberVO);
+
+        if (cnt > 0) {
+            return "Y";
+        } else {
+            return "N";
+        }
+    }
 }
