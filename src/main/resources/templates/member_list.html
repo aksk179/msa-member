@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>회원목록조회</title>
+    <style>
+        table {
+            width: 50%;
+            border-collapse: collapse;
+            margin: 20px auto;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center;">Member List</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>cell_phone</th>
+            <th>Email</th>
+            <th>zip_code</th>
+            <th>address</th>
+            <th>status</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Thymeleaf 문법으로 데이터 반복 -->
+        <tr th:each="member : ${memberList}">
+            <td th:text="${member.id}"></td>
+            <td th:text="${member.name}"></td>
+            <td th:text="${member.cellPhone}"></td>
+            <td th:text="${member.email}"></td>
+            <td th:text="${member.zipCode}"></td>
+            <td th:text="${member.address}"></td>
+            <td th:text="${member.status}"></td>
+        </tr>
+        </tbody>
+    </table>
+</body>
+</html>
