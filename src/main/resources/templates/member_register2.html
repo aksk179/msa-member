@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>회원가입화면</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 50%;
+            margin: 50px auto;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        label {
+            font-weight: bold;
+        }
+        input, button {
+            padding: 10px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>회원 가입</h1>
+        <form th:object="${member}" th:action="@{/member_register.do}" th:method="post">
+            <label for="id">아이디</label>
+            <input type="text" id="id" name="id" th:field="*{id}" required>
+
+            <label for="passwd">비밀번호</label>
+            <input type="password" id="passwd" name="passwd" th:field="*{passwd}" required>
+
+            <label for="name">이름</label>
+            <input type="text" id="name" name="name" th:field="*{name}" required>
+
+            <label for="cellPhone">전화번호</label>
+            <input type="text" id="cellPhone" name="cellPhone" th:field="*{cellPhone}" required>
+
+            <label for="email">이메일</label>
+            <input type="text" id="email" name="email" th:field="*{email}" required>
+
+            <label for="zipCode">우편번호</label>
+            <input type="text" id="zipCode" name="zipCode" th:field="*{zipCode}">
+
+            <label for="address">주소</label>
+            <input type="text" id="address" name="address" th:field="*{address}" required>
+
+            <button type="submit">등록</button>
+        </form>
+    </div>
+</body>
+</html>

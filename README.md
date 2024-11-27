@@ -64,3 +64,28 @@ commit;
 ```
 
 
+## 11.27 정리
+```java
+@ModelAttribute MemberVO memberVO;
+@RequestParam Map<String, String> param;
+```
+@ModelAttribute를 쓰면 내가 만든 VO에 바로 담을 수 있다.
+
+@RequestParam을 쓰면 param에서 뽑아서 VO에 다시 담아서 Service단으로 넘겨야 함.
+ 
+* 데이터만 통신할 시에는 RestController 이용.
+
+* json data 통신의 경우
+  * @ResponseBody, @RequestBody 사용.
+
+* form data 통신의 경우
+  * 낱개로 받을 때
+    * @RequestParam("변수명") String [변수명]
+
+  * 여러개 받을 때
+    * @RequestParam Map<String, String> param
+
+* DTO, VO를 따로 쓸 때가 있음.
+  * DTO : 클라이언트-서버 단 통신 시 이용
+  * VO : DB와의 통신 시 이용
+    * 이 둘의 변수가 같을 시 자동매핑해주는 함수도 있음. 직접 구현도 가능.

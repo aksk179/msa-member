@@ -6,4 +6,8 @@ import java.util.List;
 
 public interface MemberService {
     public List<MemberVO> selectMemberList(MemberVO memberVO);
+
+    public void registerMember(MemberVO memberVO);
+
+    public String isDuplicate(MemberVO memberVO);
 }

@@ -8,4 +8,8 @@ import java.util.List;
 @Mapper
 public interface MemberMapper {
     public List<MemberVO> selectMemberList(MemberVO memberVO);
+
+    public void registerMember(MemberVO memberVO);
+
+    public int isDuplicate(MemberVO memberVO);
 }
