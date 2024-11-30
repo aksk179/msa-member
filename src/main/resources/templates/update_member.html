@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>회원정보수정화면</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 50%;
+            margin: 50px auto;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+            vertical-align: middle;
+        }
+        th {
+            width: 25%;
+        }
+        td {
+            width: 75%;
+        }
+        input {
+            width: calc(90%); /* 길이 줄이기 */
+            padding: 8px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 8px 12px;
+            font-size: 14px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .center {
+            text-align: center;
+        }
+        .small-btn {
+            width: auto; /* 버튼 길이를 콘텐츠에 맞춤 */
+            padding: 6px 8px;
+            font-size: 12px;
+            background-color: #28a745;
+            white-space: nowrap; /* 텍스트가 세로로 분리되지 않도록 설정 */
+        }
+        .small-btn:hover {
+            background-color: #218838;
+        }
+        .pwd-success {
+            width: calc(90%);
+            background-color: #00800054;
+            color: green;
+        }
+        .pwd-fail {
+            width: calc(90%);
+            background-color: #ff000030;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>회원정보수정</h1>
+    <form id="updateForm" th:object="${member}" th:action="@{/update_member.do}" th:method="post">
+        <table>
+            <tr>
+                <th>아이디</th>
+                <td colspan="2"><input type="text" id="id" name="id" th:field="*{id}" readonly></td>
+            </tr>
+            <tr>
+                <th>기존 비밀번호</th>
+                <td><input type="password" id="currentPasswd" name="currentPasswd" required></td>
+                <td class="center"><button type="button" class="small-btn" th:onclick="chkCurrentPasswd()">비밀번호확인</button></td>
+            </tr>
+            <tr>
+                <th>새 비밀번호</th>
+                <td colspan="2"><input type="password" id="newPasswd" name="newPasswd" required disabled></td>
+            </tr>
+            <tr>
+                <th>새 비밀번호 확인</th>
+                <td colspan="2">
+                    <input type="password" id="passwdChk" name="passwdChk" required disabled>
+                    <div class="pwd-success" id="pwd-success">비밀번호가 일치합니다.</div>
+                    <div class="pwd-fail" id="pwd-fail">비밀번호가 일치하지 않습니다.</div>
+                </td>
+            </tr>
+            <tr>
+                <th>이름</th>
+                <td colspan="2"><input type="text" id="name" name="name" th:field="*{name}" required></td>
+            </tr>
+            <tr>
+                <th>전화번호</th>
+                <td colspan="2"><input type="text" id="cellPhone" name="cellPhone" th:field="*{cellPhone}" required></td>
+            </tr>
+            <tr>
+                <th>이메일</th>
+                <td colspan="2"><input type="text" id="email" name="email" th:field="*{email}" required></td>
+            </tr>
+            <tr>
+                <th>우편번호</th>
+                <td colspan="2"><input type="text" id="zipCode" name="zipCode" th:field="*{zipCode}"></td>
+            </tr>
+            <tr>
+                <th>주소</th>
+                <td colspan="2"><input type="text" id="address" name="address" th:field="*{address}" required></td>
+            </tr>
+            <tr>
+                <td colspan="3" class="center">
+                    <button type="button" onclick="update()">수정하기</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<script>
+    var isDue = 'NONE';
+
+    function chkCurrentPasswd() {
+        var id = $('#id').val();
+        var passwd = $('#currentPasswd').val();
+
+        $.ajax({
+            url: '/chk_current_passwd.do', // 서버의 컨트롤러 URL
+            type: 'POST', // POST 요청
+            contentType: 'application/json', //json 형식으로 전송
+            data: JSON.stringify({ id: id, passwd: passwd }), // 요청에 포함할 데이터
+            success: function(isPasswd) {
+                if (isPasswd=='Y') {
+                    alert("기존 비밀번호가 맞습니다.");
+                    $('#newPasswd').prop('disabled', false);
+                    $('#passwdChk').prop('disabled', false);
+                } else {
+                    alert("비밀번호가 틀렸습니다.");
+                    $('#newPasswd').prop('disabled', true);
+                    $('#passwdChk').prop('disabled', true);
+                }
+            },
+            error: function() {
+                alert("비밀번호 확인 중 오류가 발생했습니다.");
+            }
+        });
+    }
+
+    $(function() {
+        $('#pwd-success').hide();
+        $('#pwd-fail').hide();
+        $('#passwdChk').keyup(function() {
+            var newPwd = $('#newPasswd').val();
+            var passwdChk = $('#passwdChk').val();
+            if (newPwd != "" || passwdChk != "") {
+                if (newPwd == passwdChk) {
+                    isDue = 'Y';
+                    $('#pwd-success').show();
+                    $('#pwd-fail').hide();
+                } else {
+                    isDue = 'N';
+                    $('#pwd-success').hide();
+                    $('#pwd-fail').show();
+                }
+            }
+        });
+    });
+
+    function update() {
+        if (isDue == 'N') {
+            alert("비밀번호가 일치하지 않습니다.");
+            return;
+        }
+
+        updateForm.submit();
+    }
+</script>
+</body>
+</html>
