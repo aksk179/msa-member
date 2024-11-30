@@ -5,11 +5,18 @@
 
 <mapper namespace="com.ksj.member.mapper.MemberMapper">
 
-    <!-- 조회 -->
+    <!-- 회원목록조회 -->
     <select id="selectMemberList" parameterType="MemberVO" resultType="MemberVO">
         select id, name, cell_phone, email, zip_code, address, status
         from member
-        order by name asc
+        order by id asc
+    </select>
+
+    <!-- 회원조회 -->
+    <select id="selectMemberOne" parameterType="MemberVO" resultType="MemberVO">
+        select id, name, cell_phone, email, zip_code, address
+        from member
+        where id = #{id}
     </select>
 
     <!-- 등록 -->
@@ -23,5 +30,46 @@
         select count(*) as cnt
         from member
         where id = #{id}
+    </select>
+
+    <!-- 회원정보수정 -->
+    <update id="updateMemberOne" parameterType="MemberVO">
+        UPDATE member
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="newPasswd != null">
+                passwd = #{newPasswd},
+            </if>
+            <if test="cellPhone != null">
+                cell_phone = #{cellPhone},
+            </if>
+            <if test="email != null">
+                email = #{email},
+            </if>
+            <if test="zipCode != null">
+                zip_code = #{zipCode},
+            </if>
+            <if test="address != null">
+                address = #{address},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <!-- 기존 비밀번호 확인 -->
+    <select id="chkPasswd" parameterType="MemberVO" resultType="MemberVO">
+        select passwd
+        from member
+        where id = #{id}
+    </select>
+
+    <!-- 로그인 -->
+    <select id="loginMember" parameterType="MemberVO" resultType="int">
+        select count(*) as cnt
+        from member
+        where id = #{id}
+        and passwd = #{passwd}
     </select>
 </mapper>

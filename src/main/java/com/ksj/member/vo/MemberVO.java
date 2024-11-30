@@ -5,15 +5,14 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Data
-//@Getter
-//@Setter
 public class MemberVO {
     private String id;
     private String name;
     private String passwd;
+    private String newPasswd;
     private String cellPhone;
     private String email;
     private String zipCode;
     private String address;
-    public String status;
+    private String status;
 }

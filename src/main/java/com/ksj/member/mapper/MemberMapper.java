@@ -9,7 +9,15 @@ import java.util.List;
 public interface MemberMapper {
     public List<MemberVO> selectMemberList(MemberVO memberVO);
 
+    public MemberVO selectMemberOne(MemberVO memberVO);
+
     public void registerMember(MemberVO memberVO);
 
     public int isDuplicate(MemberVO memberVO);
+
+    public void updateMemberOne(MemberVO memberVO);
+
+    public MemberVO chkPasswd(MemberVO memberVO);
+
+    public int loginMember(MemberVO memberVO);
 }
