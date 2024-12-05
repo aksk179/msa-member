@@ -77,6 +77,6 @@ public class MemberController {
 
     @RequestMapping(value = "/member_main.page")
     public String mainPage() {
-        return "member_main";
+        return "/member_main";
     }
 }
