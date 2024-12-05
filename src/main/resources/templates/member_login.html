@@ -90,7 +90,10 @@
                 data: JSON.stringify({ id: id, passwd: passwd }), // 요청에 포함할 데이터
                 success: function(isLogin) {
                     isDue = isLogin;
-                    if (isLogin == 'Y') {
+                    if (isLogin == 'isStatusN') {
+                        alert("이메일 인증이 되지 않았습니다. 이메일 인증을 먼저 해주세요.");
+                    }
+                    else if (isLogin == 'Y') {
                         alert("로그인 되었습니다.");
                         login();
                     } else {

@@ -1,5 +1,7 @@
 package com.ksj.member.controller;
 
+import com.ksj.member.dto.EmailDTO;
+import com.ksj.member.service.EmailService;
 import com.ksj.member.service.MemberService;
 import com.ksj.member.vo.MemberVO;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +24,9 @@ public class MemberController {
     @Autowired
     MemberService memberService;
 
+    @Autowired
+    EmailService emailService;
+
     @RequestMapping(value = "/member_list.page")
     public String selectMemberListPage(Model model) {
         List<MemberVO> memberList = memberService.selectMemberList(new MemberVO());
@@ -40,6 +45,7 @@ public class MemberController {
     public String registerMember(@ModelAttribute MemberVO memberVO) {
         log.debug("memberVO : " + memberVO.toString());
         memberService.registerMember(memberVO);
+        emailService.sendEmail(memberVO);
         log.debug("===================== 회원가입완료 ====================");
         return "member_register_success";
     }

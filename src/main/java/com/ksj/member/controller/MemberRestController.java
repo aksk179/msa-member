@@ -5,11 +5,9 @@ import com.ksj.member.vo.MemberVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @Slf4j
@@ -39,6 +37,11 @@ public class MemberRestController {
     @RequestMapping(value = "/chkLogin.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<String> chkLogin(@RequestBody MemberVO memberVO) {
-        return ResponseEntity.ok(memberService.loginMember(memberVO));
+        MemberVO member = memberService.selectMemberOne(memberVO);
+        if (member.getStatus().equals("Y")) {
+            return ResponseEntity.ok(memberService.loginMember(memberVO));
+        } else {
+            return ResponseEntity.ok("isStatusN");
+        }
     }
 }

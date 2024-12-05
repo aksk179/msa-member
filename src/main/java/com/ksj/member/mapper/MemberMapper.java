@@ -20,4 +20,6 @@ public interface MemberMapper {
     public MemberVO chkPasswd(MemberVO memberVO);
 
     public int loginMember(MemberVO memberVO);
+
+    public MemberVO selectMemberUuid(MemberVO memberVO);
 }
