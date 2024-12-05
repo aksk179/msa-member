@@ -61,12 +61,12 @@
 <body>
 <div class="login-container">
     <h1>로그인</h1>
-    <form id="loginForm" th:action="@{/member_list.page}" method="post">
+    <form id="loginForm" th:action="@{/member_main.page}" method="post">
         <input type="text" id="id" name="id" placeholder="아이디" required />
         <input type="password" id="passwd" name="passwd" placeholder="비밀번호" required />
         <button type="button" th:onclick="chkLogin()">로그인</button>
     </form>
-    <a th:href="@{/member_register.page}">회원가입</a>
+    <a th:href="@{/login/member_register.page}">회원가입</a>
 </div>
 
 <script>
