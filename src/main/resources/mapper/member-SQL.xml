@@ -14,15 +14,15 @@
 
     <!-- 회원조회 -->
     <select id="selectMemberOne" parameterType="MemberVO" resultType="MemberVO">
-        select id, name, cell_phone, email, zip_code, address
+        select id, name, cell_phone, email, zip_code, address, status
         from member
         where id = #{id}
     </select>
 
     <!-- 등록 -->
     <insert id="registerMember" parameterType="MemberVO">
-        INSERT INTO member (id, name, passwd, cell_phone, email, zip_code, address, status) VALUES
-        (#{id}, #{name}, #{passwd}, #{cellPhone}, #{email}, #{zipCode}, #{address}, #{status})
+        INSERT INTO member (id, name, passwd, cell_phone, email, zip_code, address, status, uuid) VALUES
+        (#{id}, #{name}, #{passwd}, #{cellPhone}, #{email}, #{zipCode}, #{address}, #{status}, #{uuid})
     </insert>
 
     <!-- 아이디 중복체크 -->
@@ -54,6 +54,9 @@
             <if test="address != null">
                 address = #{address},
             </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
         </set>
         WHERE id = #{id}
     </update>
@@ -71,5 +74,12 @@
         from member
         where id = #{id}
         and passwd = #{passwd}
+    </select>
+
+    <!-- 이메일인증 상태 업데이트 -->
+    <select id="selectMemberUuid" parameterType="MemberVO" resultType="MemberVO">
+        select uuid
+        from member
+        where id = #{id}
     </select>
 </mapper>

@@ -1,8 +1,6 @@
 package com.ksj.member.vo;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 @Data
 public class MemberVO {
@@ -15,4 +13,5 @@ public class MemberVO {
     private String zipCode;
     private String address;
     private String status;
+    private String uuid;
 }

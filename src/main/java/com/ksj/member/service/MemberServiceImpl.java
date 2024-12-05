@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -27,6 +28,8 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     public void registerMember(MemberVO memberVO) {
+        String token = UUID.randomUUID().toString();
+        memberVO.setUuid(token);
         memberVO.setStatus("N");
         memberMapper.registerMember(memberVO);
     }
