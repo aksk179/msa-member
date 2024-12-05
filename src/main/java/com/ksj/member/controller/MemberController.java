@@ -27,18 +27,18 @@ public class MemberController {
     @Autowired
     EmailService emailService;
 
-    @RequestMapping(value = "/member_list.page")
+    @RequestMapping(value = "/member/member_list.page")
     public String selectMemberListPage(Model model) {
         List<MemberVO> memberList = memberService.selectMemberList(new MemberVO());
         model.addAttribute("memberList", memberList);
-        return "member_list";
+        return "/member/member_list";
     }
 
-    @RequestMapping(value = "/member_register.page")
+    @RequestMapping(value = "/login/member_register.page")
     public String registerMemberPage(Model model) {
         MemberVO memberVO = new MemberVO();
         model.addAttribute("member", memberVO);
-        return "member_register";
+        return "/login/member_register";
     }
 
     @RequestMapping(value = "/member_register.do")
@@ -47,31 +47,36 @@ public class MemberController {
         memberService.registerMember(memberVO);
         emailService.sendEmail(memberVO);
         log.debug("===================== 회원가입완료 ====================");
-        return "member_register_success";
+        return "/login/member_register_success";
     }
 
-    @RequestMapping(value = "/update_member.page", method = RequestMethod.GET)
+    @RequestMapping(value = "/member/update_member.page", method = RequestMethod.GET)
     public String updateMemberPage(@RequestParam("id") String id, Model model) {
         MemberVO memberVO = new MemberVO();
         memberVO.setId(id);
         MemberVO memberOne = memberService.selectMemberOne(memberVO);
         log.debug("memberOne : " + memberOne.toString());
         model.addAttribute("member", memberOne);
-        return "update_member";
+        return "/member/update_member";
     }
 
-    @RequestMapping(value = "/update_member.do")
+    @RequestMapping(value = "/member/update_member.do")
     public String updateMemberOne(@ModelAttribute MemberVO memberVO) {
         log.debug("memberVO : " + memberVO.toString());
         memberService.updateMemberOne(memberVO);
         log.debug("===================== 회원정보수정완료 ====================");
-        return "member_update_success";
+        return "/member/member_update_success";
     }
 
-    @RequestMapping(value = "/member_login.page")
+    @RequestMapping(value = "/login/member_login.page")
     public String loginMemberPage(Model model) {
         MemberVO memberVO = new MemberVO();
         model.addAttribute("member", memberVO);
-        return "member_login";
+        return "/login/member_login";
+    }
+
+    @RequestMapping(value = "/member_main.page")
+    public String mainPage() {
+        return "member_main";
     }
 }
