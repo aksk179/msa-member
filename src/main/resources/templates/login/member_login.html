@@ -59,6 +59,7 @@
     </style>
 </head>
 <body>
+<th:block th:replace="/fragments/header"></th:block>
 <div class="login-container">
     <h1>로그인</h1>
     <form id="loginForm" th:action="@{/member_main.page}" method="post">

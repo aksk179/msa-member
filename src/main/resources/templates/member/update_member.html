@@ -5,11 +5,11 @@
     <title>회원정보수정화면</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
+<!--        body {-->
+<!--            font-family: Arial, sans-serif;-->
+<!--            margin: 0;-->
+<!--            padding: 0;-->
+<!--        }-->
         .container {
             width: 50%;
             margin: 50px auto;
@@ -79,6 +79,7 @@
     </style>
 </head>
 <body>
+<th:block th:replace="/fragments/header"></th:block>
 <div class="container">
     <h1>회원정보수정</h1>
     <form id="updateForm" th:object="${member}" th:action="@{/update_member.do}" th:method="post">
