@@ -4,6 +4,7 @@ import com.ksj.member.mapper.MemberMapper;
 import com.ksj.member.vo.MemberVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +16,9 @@ public class MemberServiceImpl implements MemberService{
 
     @Autowired
     MemberMapper memberMapper;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @Override
     public List<MemberVO> selectMemberList(MemberVO memberVO) {
@@ -31,11 +35,17 @@ public class MemberServiceImpl implements MemberService{
         String token = UUID.randomUUID().toString();
         memberVO.setUuid(token);
         memberVO.setStatus("N");
+        memberVO.setRole("USER");
+
+        String encPwd = passwordEncoder.encode(memberVO.getPasswd());
+        memberVO.setPasswd(encPwd);
         memberMapper.registerMember(memberVO);
     }
 
     @Override
     public void updateMemberOne(MemberVO memberVO) {
+        String encPwd = passwordEncoder.encode(memberVO.getNewPasswd());
+        memberVO.setNewPasswd(encPwd);
         memberMapper.updateMemberOne(memberVO);
     }
 
@@ -54,10 +64,16 @@ public class MemberServiceImpl implements MemberService{
     @Override
     public String chkPasswd(MemberVO memberVO) {
         MemberVO returnMem = memberMapper.chkPasswd(memberVO);
-        log.debug("입력한 비밀번호 : " + memberVO.getPasswd());
-        log.debug("기존 비밀번호 : " + returnMem.getPasswd());
 
-        if (memberVO.getPasswd().equals(returnMem.getPasswd())) {
+        String originalPwd = passwordEncoder.encode(memberVO.getPasswd());
+
+        log.info("기존 비밀번호 : " + returnMem.getPasswd());
+
+        log.info("입력한 비밀번호 : " + memberVO.getPasswd());
+        log.info("입력한 비밀번호 암호화 : " + originalPwd);
+
+
+        if (passwordEncoder.matches(memberVO.getPasswd(), returnMem.getPasswd())) {
             return "Y";
         } else {
             return "N";

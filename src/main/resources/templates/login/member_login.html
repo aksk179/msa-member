@@ -62,7 +62,7 @@
 <th:block th:replace="/fragments/header"></th:block>
 <div class="login-container">
     <h1>로그인</h1>
-    <form id="loginForm" th:action="@{/member_main.page}" method="post">
+    <form id="loginForm" th:action="@{/login/member_login}" method="post">
         <input type="text" id="id" name="id" placeholder="아이디" required />
         <input type="password" id="passwd" name="passwd" placeholder="비밀번호" required />
         <button type="button" th:onclick="chkLogin()">로그인</button>
@@ -83,29 +83,33 @@
             alert("아이디를 입력해주세요.");
         } else if (passwd == "") {
             alert("비밀번호를 입력해주세요.");
-        } else {
-            $.ajax({
-                url: '/chkLogin.do', // 서버의 컨트롤러 URL
-                type: 'POST',
-                contentType: 'application/json', //json 형식으로 전송
-                data: JSON.stringify({ id: id, passwd: passwd }), // 요청에 포함할 데이터
-                success: function(isLogin) {
-                    isDue = isLogin;
-                    if (isLogin == 'isStatusN') {
-                        alert("이메일 인증이 되지 않았습니다. 이메일 인증을 먼저 해주세요.");
-                    }
-                    else if (isLogin == 'Y') {
-                        alert("로그인 되었습니다.");
-                        login();
-                    } else {
-                        alert("일치하지 않습니다. 확인해주세요.");
-                    }
-                },
-                error: function() {
-                    alert("로그인 중 오류가 발생했습니다.");
-                }
-            });
         }
+
+        login();
+
+<!--        else {-->
+<!--            $.ajax({-->
+<!--                url: '/chkLogin.do', // 서버의 컨트롤러 URL-->
+<!--                type: 'POST',-->
+<!--                contentType: 'application/json', //json 형식으로 전송-->
+<!--                data: JSON.stringify({ id: id, passwd: passwd }), // 요청에 포함할 데이터-->
+<!--                success: function(isLogin) {-->
+<!--                    isDue = isLogin;-->
+<!--                    if (isLogin == 'isStatusN') {-->
+<!--                        alert("이메일 인증이 되지 않았습니다. 이메일 인증을 먼저 해주세요.");-->
+<!--                    }-->
+<!--                    else if (isLogin == 'Y') {-->
+<!--                        alert("로그인 되었습니다.");-->
+<!--                        login();-->
+<!--                    } else {-->
+<!--                        alert("일치하지 않습니다. 확인해주세요.");-->
+<!--                    }-->
+<!--                },-->
+<!--                error: function() {-->
+<!--                    alert("로그인 중 오류가 발생했습니다.");-->
+<!--                }-->
+<!--            });-->
+<!--        }-->
     }
 
     function login() {

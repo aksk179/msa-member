@@ -22,4 +22,6 @@ public interface MemberMapper {
     public int loginMember(MemberVO memberVO);
 
     public MemberVO selectMemberUuid(MemberVO memberVO);
+
+    public MemberVO selectMemberPasswd(MemberVO memberVO);
 }

@@ -1,18 +1,15 @@
-package com.ksj.member.vo;
+package com.ksj.member.dto;
 
 import lombok.Data;
 
 @Data
-public class MemberVO {
+public class MemberDTO {
     private String id;
     private String name;
     private String passwd;
-    private String newPasswd;
     private String cellPhone;
     private String email;
     private String zipCode;
     private String address;
     private String status;
-    private String uuid;
-    private String role;
 }
