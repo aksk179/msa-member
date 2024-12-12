@@ -41,7 +41,7 @@ public class MemberController {
         return "/login/member_register";
     }
 
-    @RequestMapping(value = "/member_register.do")
+    @RequestMapping(value = "/member/member_register.do")
     public String registerMember(@ModelAttribute MemberVO memberVO) {
         log.debug("memberVO : " + memberVO.toString());
         memberService.registerMember(memberVO);

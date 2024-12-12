@@ -91,4 +91,4 @@ commit;
     * 이 둘의 변수가 같을 시 자동매핑해주는 함수도 있음. 직접 구현도 가능.
 
 ## 12.06 정리
-* 
+* .loginProcessingUrl("/login/member_login") ----> loadUserByUsername()

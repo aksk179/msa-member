@@ -82,7 +82,7 @@
 <th:block th:replace="/fragments/header"></th:block>
 <div class="container">
     <h1>회원정보수정</h1>
-    <form id="updateForm" th:object="${member}" th:action="@{/update_member.do}" th:method="post">
+    <form id="updateForm" th:object="${member}" th:action="@{/member/update_member.do}" th:method="post">
         <table>
             <tr>
                 <th>아이디</th>
