@@ -16,19 +16,19 @@ public class MemberRestController {
     @Autowired
     MemberService memberService;
 
-    @RequestMapping(value = "/get_member_list.do", method = RequestMethod.POST)
+    @RequestMapping(value = "/admin/get_member_list.do", method = RequestMethod.POST)
     public List<MemberVO> selectMemberList(MemberVO memberVO) {
         return memberService.selectMemberList(memberVO);
     }
 
-    @RequestMapping(value = "/check_duplicate.do", method = RequestMethod.POST)
+    @RequestMapping(value = "/login/check_duplicate.do", method = RequestMethod.POST)
     public ResponseEntity<String> isDuplicate(@RequestParam("id") String id) {
         MemberVO memberVO = new MemberVO();
         memberVO.setId(id);
         return ResponseEntity.ok(memberService.isDuplicate(memberVO));
     }
 
-    @RequestMapping(value = "/chk_current_passwd.do", method = RequestMethod.POST)
+    @RequestMapping(value = "/user/chk_current_passwd.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<String> chkPasswd(@RequestBody MemberVO memberVO) {
         return ResponseEntity.ok(memberService.chkPasswd(memberVO));

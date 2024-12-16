@@ -20,9 +20,10 @@ public class SecurityConfig {
             .csrf((crsfConfig) -> crsfConfig.disable())
             .headers((headerConfig) -> headerConfig.frameOptions(frameOptionsConfig -> frameOptionsConfig.disable()))
             .authorizeHttpRequests((authoziedRequest) -> authoziedRequest
-                    .requestMatchers("/").permitAll()
-//                    .requestMatchers("/login/**").permitAll()
-                    .requestMatchers("/member/**").hasAnyRole("ADMIN", "MANAGER")
+                    .requestMatchers("/", "/images/**").permitAll()
+                    .requestMatchers("/login/**").permitAll()
+                    .requestMatchers("/admin/**").hasAnyRole("ADMIN")
+                    .requestMatchers("/user/**").hasAnyRole("ADMIN", "USER")
                     .anyRequest().authenticated()
             )
             .formLogin(formLogin -> formLogin
@@ -30,12 +31,12 @@ public class SecurityConfig {
                     .loginProcessingUrl("/login/member_login")
                     .usernameParameter("id")
                     .passwordParameter("passwd")
-                    .defaultSuccessUrl("/member_main.page")
+                    .defaultSuccessUrl("/")
                     .permitAll()
             )
             .logout(logout -> logout
                     .logoutUrl("/login/member_logout.do")
-                    .logoutSuccessUrl("/login/member_login.page")
+                    .logoutSuccessUrl("/")
                     .invalidateHttpSession(true)
                     .deleteCookies("JSESSIONID")
             );

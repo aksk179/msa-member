@@ -7,6 +7,9 @@ import com.ksj.member.vo.MemberVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -27,11 +30,11 @@ public class MemberController {
     @Autowired
     EmailService emailService;
 
-    @RequestMapping(value = "/member/member_list.page")
+    @RequestMapping(value = "/admin/member_list.page")
     public String selectMemberListPage(Model model) {
         List<MemberVO> memberList = memberService.selectMemberList(new MemberVO());
         model.addAttribute("memberList", memberList);
-        return "/member/member_list";
+        return "/admin/member_list";
     }
 
     @RequestMapping(value = "/login/member_register.page")
@@ -41,7 +44,7 @@ public class MemberController {
         return "/login/member_register";
     }
 
-    @RequestMapping(value = "/member/member_register.do")
+    @RequestMapping(value = "/login/member_register.do")
     public String registerMember(@ModelAttribute MemberVO memberVO) {
         log.debug("memberVO : " + memberVO.toString());
         memberService.registerMember(memberVO);
@@ -50,22 +53,44 @@ public class MemberController {
         return "/login/member_register_success";
     }
 
-    @RequestMapping(value = "/member/update_member.page", method = RequestMethod.GET)
-    public String updateMemberPage(@RequestParam("id") String id, Model model) {
+    @RequestMapping(value = "/admin/update_member.page", method = RequestMethod.GET)
+    public String updateMemberAdminPage(@RequestParam("id") String id, Model model) {
         MemberVO memberVO = new MemberVO();
         memberVO.setId(id);
         MemberVO memberOne = memberService.selectMemberOne(memberVO);
         log.debug("memberOne : " + memberOne.toString());
         model.addAttribute("member", memberOne);
-        return "/member/update_member";
+        return "/admin/update_member";
     }
 
-    @RequestMapping(value = "/member/update_member.do")
-    public String updateMemberOne(@ModelAttribute MemberVO memberVO) {
+    @RequestMapping(value = "/user/update_member_user.page", method = RequestMethod.GET)
+    public String updateMemberUserPage(Model model) {
+        SecurityContext context = SecurityContextHolder.getContext();
+        Authentication authentication = context.getAuthentication();
+        String id = authentication.getName();
+
+        MemberVO memberVO = new MemberVO();
+        memberVO.setId(id);
+        MemberVO memberOne = memberService.selectMemberOne(memberVO);
+        log.debug("memberOne : " + memberOne.toString());
+        model.addAttribute("member", memberOne);
+        return "/user/update_member_user";
+    }
+
+    @RequestMapping(value = "/admin/update_member.do")
+    public String updateMemberOneAdmin(@ModelAttribute MemberVO memberVO) {
         log.debug("memberVO : " + memberVO.toString());
         memberService.updateMemberOne(memberVO);
         log.debug("===================== 회원정보수정완료 ====================");
-        return "/member/member_update_success";
+        return "/admin/member_update_success";
+    }
+
+    @RequestMapping(value = "/user/update_member.do")
+    public String updateMemberOneUser(@ModelAttribute MemberVO memberVO) {
+        log.debug("memberVO : " + memberVO.toString());
+        memberService.updateMemberOne(memberVO);
+        log.debug("===================== 회원정보수정완료 ====================");
+        return "/user/member_update_success";
     }
 
     @RequestMapping(value = "/login/member_login.page")
@@ -75,7 +100,7 @@ public class MemberController {
         return "/login/member_login";
     }
 
-    @RequestMapping(value = "/member_main.page")
+    @RequestMapping(value = "/")
     public String mainPage() {
         return "/member_main";
     }

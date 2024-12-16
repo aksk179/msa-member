@@ -92,3 +92,56 @@ commit;
 
 ## 12.06 정리
 * .loginProcessingUrl("/login/member_login") ----> loadUserByUsername()
+```javascript
+<!-- 기존코드 -->
+<div class="login-container">
+    <h1>로그인</h1>
+    <form id="loginForm" th:action="@{/member_main.page}" method="post">
+        <input type="text" id="id" name="id" placeholder="아이디" required />
+        <input type="password" id="passwd" name="passwd" placeholder="비밀번호" required />
+        <button type="button" th:onclick="chkLogin()">로그인</button>
+    </form>
+    <a th:href="@{/login/member_register.page}">회원가입</a>
+</div>
+
+<!-- SpringSecurity 쓰면서바뀐 코드 -->
+<div class="login-container">
+    <h1>로그인</h1>
+    <form id="loginForm" th:action="@{/login/member_login}" method="post">
+        <input type="text" id="id" name="id" placeholder="아이디" required />
+        <input type="password" id="passwd" name="passwd" placeholder="비밀번호" required />
+        <button type="button" th:onclick="chkLogin()">로그인</button>
+    </form>
+    <a th:href="@{/login/member_register.page}">회원가입</a>
+</div>
+```
+* th:action="@{/member_main.page}" --> th:action="@{/login/member_login}"
+* 기존 /member_main.page는 로그인 버튼(chkLogin())누르면 ajax 이용해서 
+  ```java
+  memberService.selectMemberOne(memberVO);
+  ```
+  호출해서 회원 조회 sql 호출해서 status 값이 Y인지 N인지 확인 후 N이면 이메일 인증값에 대해 isStatusN return, Y면 이메일 인증값에 대해
+  ```java
+  memberService.loginMember(memberVO);
+  ```
+  로그인 호출 하여 아이디, 비밀번호 들고가서 계정이 맞는지 확인 후, loginForm.submit()하여 action에 위치한 member_main.page로 화면이동 하는 로직이었음.
+* **
+* 바뀐 /login/member_login는 
+  ```java
+  .formLogin(formLogin -> formLogin
+          .loginPage("/login/member_login.page")
+          .loginProcessingUrl("/login/member_login")
+          .usernameParameter("id")
+          .passwordParameter("passwd")
+          .defaultSuccessUrl("/member_main.page")
+          .permitAll()
+  )
+  ```
+  (Config설정에 .formLogin()에서 셋팅을 먼저 한다.)
+  Config설정에 셋팅이 되어있으니 loginForm.submit() 했을 때 /login/member_login(로그인 처리 URL) 찾아 security 설정 되어있는 곳으로 연결됌.
+  id를 loadUserByUsername() 여기로 보내서
+  ```java
+  memberMapper.selectMemberPasswd(memberVO);
+  ```
+  그 아이디의 passwd, role를 조회해오고 User.builder() 하면
+  UserDetails 객체를 생성하고 이 객체는 SpringSecurity가 내부적으로 사용자 인증 및 권한 관리를 처리할 때 사용 됌.

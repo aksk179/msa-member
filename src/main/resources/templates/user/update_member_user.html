@@ -82,7 +82,7 @@
 <th:block th:replace="/fragments/header"></th:block>
 <div class="container">
     <h1>회원정보수정</h1>
-    <form id="updateForm" th:object="${member}" th:action="@{/member/update_member.do}" th:method="post">
+    <form id="updateForm" th:object="${member}" th:action="@{/user/update_member.do}" th:method="post">
         <table>
             <tr>
                 <th>아이디</th>
@@ -141,7 +141,7 @@
         var passwd = $('#currentPasswd').val();
 
         $.ajax({
-            url: '/chk_current_passwd.do', // 서버의 컨트롤러 URL
+            url: '/user/chk_current_passwd.do', // 서버의 컨트롤러 URL
             type: 'POST', // POST 요청
             contentType: 'application/json', //json 형식으로 전송
             data: JSON.stringify({ id: id, passwd: passwd }), // 요청에 포함할 데이터

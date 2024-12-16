@@ -81,7 +81,7 @@
 <th:block th:replace="/fragments/header"></th:block>
 <div class="container">
     <h1>회원가입</h1>
-    <form id="registerForm" th:object="${member}" th:action="@{/member/member_register.do}" th:method="post">
+    <form id="registerForm" th:object="${member}" th:action="@{/login/member_register.do}" th:method="post">
         <table>
             <tr>
                 <td>아이디</td>
@@ -132,7 +132,7 @@
             alert("id를 입력해주세요.");
         } else {
             $.ajax({
-                url: '/check_duplicate.do', // 서버의 컨트롤러 URL
+                url: '/login/check_duplicate.do', // 서버의 컨트롤러 URL
                 type: 'POST',
                 data: { id: id }, // 요청에 포함할 데이터
                 success: function(isDuplicate) {
