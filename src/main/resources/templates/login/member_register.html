@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>회원가입</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -14,7 +13,7 @@
             height: 100vh;
             margin: 0;
         }
-        .container {
+        .register-container {
             background: white;
             padding: 30px 40px;
             border-radius: 8px;
@@ -22,14 +21,14 @@
             width: 400px;
             text-align: center;
         }
-        .container a {
+        .register-container a {
             display: block;
             margin-top: 15px;
             color: #007BFF;
             text-decoration: none;
             font-size: 14px;
         }
-        .container a:hover {
+        .register-container a:hover {
             text-decoration: underline;
         }
         h1 {
@@ -79,7 +78,7 @@
 </head>
 <body>
 <th:block th:replace="/fragments/header"></th:block>
-<div class="container">
+<div class="register-container">
     <h1>회원가입</h1>
     <form id="registerForm" th:object="${member}" th:action="@{/login/member_register.do}" th:method="post">
         <table>

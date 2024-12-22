@@ -145,3 +145,58 @@ commit;
   ```
   그 아이디의 passwd, role를 조회해오고 User.builder() 하면
   UserDetails 객체를 생성하고 이 객체는 SpringSecurity가 내부적으로 사용자 인증 및 권한 관리를 처리할 때 사용 됌.
+
+## 12.17 정리
+
+## 12.22 정리
+### AWS 환경구성
+* tomcat 설치
+```shell
+wget http://archive.apache.org/dist/tomcat/tomcat-8/v8.5.27/bin/apache-tomcat-8.5.27.tar.gzwget http://archive.apache.org/dist/tomcat/tomcat-8/v8.5.27/bin/apache-tomcat-8.5.27.tar.gz
+tar zxvf apache-tomcat-8.5.27.tar.gz
+```
+* java 설치
+```shell
+sudo apt upgrade
+sudo apt-get update
+sudo apt install openjdk-17-jdk
+
+```
+* DB 설치 
+```shell
+sudo apt show postgresql-16
+sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list. d/pgdg.list'
+sudo apt-get update
+sudo apt-get -y install postgresql
+psql --vrsion
+
+```
+* DB 계정 생성
+```shell
+sudo -i -u postgres
+create user sjkang password '1234' superuser;
+vi /etc/postgresql/16/main/pg_hba.conf
+peer -> md5
+exit
+sudo service postgresql restart
+select * from PG_DATABASE;
+create database member owner sjkang;
+psql -U sjkang -d member
+show tables
+cd /etc/postgresql/16/main$
+vi pg_hba.conf
+IPv4 밑에 all all 
+vi postgresql.conf
+listen = '*'
+sudo service postgresql restart
+sudo -i -u postgres
+psql -U sjkang -d member
+```
+
+* prod 설정 
+   * application-prod.properties 하나 더 만들기 -> aws private ip 넣어서 설정하기
+   * package
+   * server
+      ```shell
+      java -jar -Dspring.profiles.active=prod member-0.0.1-SNAPSHOT.jar
+      ```
