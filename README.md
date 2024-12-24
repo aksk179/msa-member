@@ -205,3 +205,47 @@ select * from PG_DATABASE;
       java -jar -Dspring.profiles.active=prod member-0.0.1-SNAPSHOT.jar
       ```
 
+## 12.24 정리
+* jenkins 설치
+```shell
+startup.sh 작성
+nohup java -jar jenkins.war --httpPort=8081 &
+```
+* chmod 700 startup.sh --> 실행 권한 나에게만 부여
+* jenkins 들어가서 설정하기
+  * cat /home/ubuntu/jenkins/webapps/secrets/initialAdminPassword 비밀번호 입력
+  * maven plugin 설치, 수동설정
+    * Jenkins관리 - Tools에 있음.
+  * credentials 적용(?)
+  * 새로운 item - pipeline 만들기
+    * shell script 쓰기
+      * ```shell
+        pipeline {
+          agent any
+      
+          tools {
+            maven 'maven399' --> 내가 설정한 이름
+          }
+      
+          stages {
+            stage('Git Pull') {
+              steps {
+                echo '========= Git Pull ========'
+                git branch: 'main', credentialsId: 'gitadmin',
+                url: 'https://github.com/aksk179/msa-member.git'
+              }
+            }
+            stage('Maven_Build') {
+              steps {
+                echo '======== Maven_Build ========'
+                sh '''
+                mvn clean package -DskipTests
+                ls -l
+                '''
+              }
+            }
+          }
+        }
+        ```
+* 만든 pipeline - 구성에 들어가면 됌.
+* 지금 빌드
