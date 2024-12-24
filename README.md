@@ -152,8 +152,8 @@ commit;
 ### AWS 환경구성
 * tomcat 설치
 ```shell
-wget http://archive.apache.org/dist/tomcat/tomcat-8/v8.5.27/bin/apache-tomcat-8.5.27.tar.gzwget http://archive.apache.org/dist/tomcat/tomcat-8/v8.5.27/bin/apache-tomcat-8.5.27.tar.gz
-tar zxvf apache-tomcat-8.5.27.tar.gz
+wget http://archive.apache.org/dist/tomcat/tomcat-9/v9.0.98/bin/apache-tomcat-9.0.98.tar.gz
+tar zxvf apache-tomcat-9.0.98.tar.gz
 ```
 * java 설치
 ```shell
@@ -168,29 +168,33 @@ sudo apt show postgresql-16
 sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list. d/pgdg.list'
 sudo apt-get update
 sudo apt-get -y install postgresql
-psql --vrsion
+psql --version
 
 ```
 * DB 계정 생성
 ```shell
-sudo -i -u postgres
+[ubuntu]sudo -i -u postgres
+psql
 create user sjkang password '1234' superuser;
-vi /etc/postgresql/16/main/pg_hba.conf
-peer -> md5
+\du --> 계정 조회
+create database sjdb owner sjkang;
+\l --> database 조회
 exit
-sudo service postgresql restart
-select * from PG_DATABASE;
-create database member owner sjkang;
-psql -U sjkang -d member
-show tables
-cd /etc/postgresql/16/main$
-vi pg_hba.conf
-IPv4 밑에 all all 
+[ubuntu]sudo service postgresql restart
+
+error남 설정 추가해야함
+vi /etc/postgresql/16/main/pg_hba.conf
+# "local" is for Unix domain socket connections only
+local   all             all                                     md5
+# IPv4 local connections:
+host    all             all             0.0.0.0/0               scram-sha-256
 vi postgresql.conf
-listen = '*'
-sudo service postgresql restart
-sudo -i -u postgres
-psql -U sjkang -d member
+listen_addresses = '*' 
+
+[ubuntu]sudo service postgresql restart
+[ubuntu]sudo -i -u postgres
+psql -U sjkang -d sjdb
+select * from PG_DATABASE;
 ```
 
 * prod 설정 
@@ -200,3 +204,4 @@ psql -U sjkang -d member
       ```shell
       java -jar -Dspring.profiles.active=prod member-0.0.1-SNAPSHOT.jar
       ```
+
